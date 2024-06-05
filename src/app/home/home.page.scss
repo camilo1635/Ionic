@@ -29,3 +29,43 @@
 .taskDone {
   text-decoration: line-through;
 }
+
+table.tasks-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+td {
+  white-space: nowrap; /* Evita que el texto se envuelva */
+}
+
+.product-column {
+  width: 40%; /* Ajusta el porcentaje según sea necesario */
+}
+
+.site-column {
+  width: 20%; /* Ajusta el porcentaje según sea necesario */
+}
+
+.date-column {
+  width: 20%; /* Ajusta el porcentaje según sea necesario */
+}
+
+.actions-column {
+  width: 20%; /* Ajusta el porcentaje según sea necesario */
+}
+
+.taskDone {
+  text-decoration: line-through;
+  color: gray;
+}

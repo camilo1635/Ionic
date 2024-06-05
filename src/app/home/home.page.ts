@@ -23,6 +23,7 @@ const firebaseConfig = {
   standalone: true,
   imports: [NgClass, IonItemOption, IonItemOptions, IonItemSliding, NgFor, IonLabel, IonItem, IonList, IonButtons, IonIcon, IonButton, IonHeader, IonToolbar, IonTitle, IonContent],
 })
+
 export class HomePage {
 
   taskList;
@@ -34,11 +35,11 @@ export class HomePage {
     this.taskList = ref(this.db, 'tasks');
 
     onChildAdded(this.taskList, (data) => {
-      this.tasks.push( { id: data.key, title: data.val().title, status: data.val().status } );
+      this.tasks.push( { id: data.key, title: data.val().title, sitio: data.val().sitio, fecha: data.val().fecha } );
     });
 
     onChildChanged(this.taskList, (data) => {
-      const task = { id: data.key, title: data.val().title, status: data.val().status };
+      const task = { id: data.key, title: data.val().title, sitio: data.val().sitio, fecha: data.val().fecha};
       let index = this.tasks.indexOf(task);
       if (index > -1) {
         this.tasks.splice(index, 1);
@@ -46,7 +47,7 @@ export class HomePage {
     });
 
     onChildRemoved(this.taskList, (data) => {
-      const task = { id: data.key, title: data.val().title, status: data.val().status };
+      const task = { id: data.key, title: data.val().title, sitio: data.val().sitio, fecha: data.val().fecha };
       let index = this.tasks.indexOf(task);
       if (index > -1) {
         this.tasks.splice(index, 1);
@@ -59,54 +60,42 @@ export class HomePage {
       console.log(JSON.stringify(misdatos));
       if (typeof(misdatos) != 'undefined') {
         misdatos.forEach( (element: Task) => {
-          this.tasks.push( { id: element.id, title: element.title, status: element.status } );
+          this.tasks.push( { id: element.id, title: element.title, sitio: element.sitio, fecha: element.fecha } );
         })
       }
     });
   }
 
-  async getTasks(taskCol: CollectionReference) {
-    const taskSnapshot = await getDocs(taskCol);
-    const tasksData: DocumentData[] = taskSnapshot.docs.map( doc => doc.data() );
-    tasksData.forEach(data => {
-      console.log(data);
-    });
-  }
-
   addItem() {
-    let theNewTask: string|null;
-    theNewTask = prompt("New Task", '');
-    if (theNewTask !== '' && theNewTask != null) {
+    let theNewTask = prompt("New Task", '');
+    let theNewSite = prompt("New Site", '');
+    let theNewDate = prompt("New Date", '');
+    if (theNewTask !== '' && theNewTask != null && theNewSite !== '' && theNewSite != null && theNewDate !== '' && theNewDate != null) {
       const taskCol = ref(this.db, 'tasks');
       const newTask = push(taskCol);
       set(newTask, {
         id: newTask.key,
         title: theNewTask,
-        status: 'open'
+        sitio: theNewSite,
+        fecha: theNewDate
       });
     }
   }
 
   trackItems(index: number, itemObject: any) {
-    return itemObject.title;
+    return itemObject.id;
   }
 
-  markAsDone(itemSliding: IonItemSliding, task: Task) {
-    task.status = 'done';
+  markAsDone(task: Task) {
+    task.sitio = 'done';
     const taskRef = ref(this.db, 'tasks/' + task.id);
     set(taskRef, task);
-    setTimeout( () => { itemSliding.close() }, 1 );
   }
 
-  removeTask(itemSliding: IonItemSliding, task: Task) {
-    this.deleteItem(task);
-    setTimeout( () => { itemSliding.close() }, 1 );
-  }
-
-  deleteItem(task: Task) {
+  removeTask(task: Task) {
     const taskRef = ref(this.db, 'tasks/' + task.id);
     remove(taskRef).then(() => {
-      let index = this.tasks.indexOf(task);
+      let index = this.tasks.findIndex(t => t.id === task.id);
       if (index > -1) {
         this.tasks.splice(index, 1);
       }
@@ -114,5 +103,5 @@ export class HomePage {
       console.error("Error removing document: ", error);
     });
   }
-
 }
+
