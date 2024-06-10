@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NgFor, NgClass } from '@angular/common';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonIcon, IonButtons, IonList, IonItem, IonLabel, IonItemSliding, IonItemOptions, IonItemOption } from '@ionic/angular/standalone';
 import { Task } from './task';
+import { listaCompras } from './listaCompras';
 import { initializeApp } from "firebase/app";
 import { DocumentData, CollectionReference, collection, getDocs, getFirestore } from "firebase/firestore/lite";
 import { getDatabase, onValue, ref, push, set, remove, onChildAdded, onChildChanged, onChildRemoved } from "firebase/database";
@@ -35,7 +36,7 @@ export class HomePage {
     this.taskList = ref(this.db, 'tasks');
 
     onChildAdded(this.taskList, (data) => {
-      this.tasks.push( { id: data.key, title: data.val().title, sitio: data.val().sitio, fecha: data.val().fecha } );
+      this.tasks.unshift( { id: data.key, title: data.val().title, sitio: data.val().sitio, fecha: data.val().fecha } );
     });
 
     onChildChanged(this.taskList, (data) => {
@@ -60,7 +61,7 @@ export class HomePage {
       console.log(JSON.stringify(misdatos));
       if (typeof(misdatos) != 'undefined') {
         misdatos.forEach( (element: Task) => {
-          this.tasks.push( { id: element.id, title: element.title, sitio: element.sitio, fecha: element.fecha } );
+          this.tasks.unshift( { id: element.id, title: element.title, sitio: element.sitio, fecha: element.fecha } );
         })
       }
     });
@@ -69,15 +70,20 @@ export class HomePage {
   addItem() {
     let theNewTask = prompt("New Task", '');
     let theNewSite = prompt("New Site", '');
-    let theNewDate = prompt("New Date", '');
-    if (theNewTask !== '' && theNewTask != null && theNewSite !== '' && theNewSite != null && theNewDate !== '' && theNewDate != null) {
+    if (theNewTask !== '' && theNewTask != null && theNewSite !== '' && theNewSite != null) {
+      const newTask = new Task();
+      newTask.title = theNewTask;
+      newTask.sitio = theNewSite;
+      newTask.id = null;
+
       const taskCol = ref(this.db, 'tasks');
-      const newTask = push(taskCol);
-      set(newTask, {
-        id: newTask.key,
-        title: theNewTask,
-        sitio: theNewSite,
-        fecha: theNewDate
+      const newTaskRef = push(taskCol);
+      newTask.id = newTaskRef.key;
+
+      set(newTaskRef, newTask).then(() => {
+        console.log("Task added successfully!");
+      }).catch((error) => {
+        console.error("Error adding task: ", error);
       });
     }
   }

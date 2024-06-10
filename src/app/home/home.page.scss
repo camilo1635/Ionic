@@ -1,3 +1,12 @@
+.large-plus-button {
+  font-size: 24px; 
+}
+
+.large-plus {
+  font-size: 24px; 
+}
+
+
 #container {
   text-align: center;
 
@@ -46,23 +55,23 @@ th {
 }
 
 td {
-  white-space: nowrap; /* Evita que el texto se envuelva */
+  white-space: nowrap; 
 }
 
 .product-column {
-  width: 40%; /* Ajusta el porcentaje según sea necesario */
+  width: 40%; 
 }
 
 .site-column {
-  width: 20%; /* Ajusta el porcentaje según sea necesario */
+  width: 20%; 
 }
 
 .date-column {
-  width: 20%; /* Ajusta el porcentaje según sea necesario */
+  width: 20%; 
 }
 
 .actions-column {
-  width: 20%; /* Ajusta el porcentaje según sea necesario */
+  width: 20%; 
 }
 
 .taskDone {
