@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Nuevo Producto</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">Cancelar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ion-item>
+    <ion-label position="floating">Nombre del Producto</ion-label>
+    <ion-input [(ngModel)]="newProduct.title"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Sitio</ion-label>
+    <ion-select [(ngModel)]="newProduct.sitio">
+      <ion-select-option *ngFor="let site of sites" [value]="site.nombre">{{ site.nombre }}</ion-select-option>
+      <ion-select-option (click)="requestNewSite()">Agregar nuevo sitio</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-button expand="block" (click)="saveProduct()">Guardar</ion-button>
+</ion-content>

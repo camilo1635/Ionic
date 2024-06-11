@@ -1,0 +1,19 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-title>Nuevo Sitio</ion-title>
+      <ion-buttons slot="end">
+        <ion-button (click)="dismissModal()">Cancelar</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <ion-item>
+      <ion-label position="floating">Nombre del Sitio</ion-label>
+      <ion-input [(ngModel)]="newSite.nombre"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Fecha de Registro</ion-label>
+      <ion-datetime [(ngModel)]="newSite.fechaRegistro"></ion-datetime>
+    </ion-item>
+    <ion-button expand="block" (click)="saveSite()">Guardar</ion-button>
+  </ion-content>
