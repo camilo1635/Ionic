@@ -9,9 +9,10 @@ import { getDatabase, onValue, ref, push, set, remove, onChildAdded, onChildChan
 import { Title } from '@angular/platform-browser';
 import { ProductModalComponent } from './../product-modal.component';
 import { SiteModalComponent } from './../site-modal.component';
-import { ReactiveFormsModule } from '@angular/forms'; 
+//import { ReactiveFormsModule } from '@angular/forms'; 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { FormsModule } from '@angular/forms';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDPeDkIcltFwDgAS6FpV4mG6vKU7KdWY_4",
@@ -27,7 +28,7 @@ const firebaseConfig = {
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [NgClass, IonItemOption, IonItemOptions, IonItemSliding, NgFor, IonLabel, IonItem, IonList, IonButtons, IonIcon, IonButton, IonHeader, IonToolbar, IonTitle, IonContent, ReactiveFormsModule],
+  imports: [NgClass, IonItemOption, IonItemOptions, IonItemSliding, NgFor, IonLabel, IonItem, IonList, IonButtons, IonIcon, IonButton, IonHeader, IonToolbar, IonTitle, IonContent,FormsModule ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 
