@@ -89,7 +89,7 @@ export class HomePage {
     const modal = await this.modalController.create({
       component: ProductModalComponent,
       componentProps: {
-        sites: this.sites
+        sites: this.sites // Pasa la lista de sitios como propiedad de entrada
       }
     });
 
@@ -122,37 +122,43 @@ export class HomePage {
     return await modal.present();
   }
 
-  addProduct(product: { title: string, sitio: string }) {
-  const newProduct = new listaCompras();
-  newProduct.title = product.title;
-  newProduct.sitio = product.sitio;
+  addProduct(product: { title?: string, sitio: string }) {
+    const newProduct = new listaCompras();
+    if (product.title) { 
+      newProduct.title = product.title; 
+    }
+    if (product.sitio){
+      newProduct.sitio = product.sitio;
+    }
+  
+    const productCol = ref(this.db, 'products');
+    const newProductRef = push(productCol);
+    newProduct.id = newProductRef.key;
+  
+    set(newProductRef, newProduct).then(() => {
+      console.log("Product added successfully!");
+    }).catch((error) => {
+      console.error("Error adding product: ", error);
+    });
+  }
 
-  const productCol = ref(this.db, 'products');
-  const newProductRef = push(productCol);
-  newProduct.id = newProductRef.key;
-
-  set(newProductRef, newProduct).then(() => {
-    console.log("Product added successfully!");
-  }).catch((error) => {
-    console.error("Error adding product: ", error);
-  });
-}
-
-  addSite(site: sitesList) {
+  addSite(site: { id: string, nombre: string, fechaRegistro: string }) {
     const newSite = new sitesList();
-    newSite.id = site.id;
     newSite.nombre = site.nombre;
     newSite.fechaRegistro = site.fechaRegistro;
-
+  
     const siteCol = ref(this.db, 'sites');
     const newSiteRef = push(siteCol);
     newSite.id = newSiteRef.key;
-
-    set(newSiteRef, newSite).then(() => {
-      console.log("Site added successfully!");
-    }).catch((error) => {
-      console.error("Error adding site: ", error);
-    });
+  
+    set(newSiteRef, { ...newSite }) // Guarda una copia del objeto newSite
+      .then(() => {
+        console.log("Site added successfully!");
+        this.loadSites(); // Actualizar la lista de sitios
+      })
+      .catch((error) => {
+        console.error("Error adding site: ", error);
+      });
   }
 
   addItem() {

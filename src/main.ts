@@ -7,6 +7,12 @@ import { environment } from './environments/environment';
 import { addIcons } from 'ionicons';
 import { add, checkmark, trash } from 'ionicons/icons';
 import { routes } from './app/app.routes';
+import { calendarOutline, addOutline } from 'ionicons/icons';
+
+addIcons({
+  'calendar-outline': calendarOutline,
+  'add-outline': addOutline
+});
 
 
 if (environment.production) {

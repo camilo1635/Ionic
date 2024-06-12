@@ -7,6 +7,7 @@ import { NgFor, NgClass } from '@angular/common';
 //import { ReactiveFormsModule } from '@angular/forms'; 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { SharedModule } from './shared.module';
+import { sitesList } from './home/sitesList';
 
 @Component({
   selector: 'app-product-modal',
@@ -16,7 +17,7 @@ import { SharedModule } from './shared.module';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class ProductModalComponent {
-  @Input() sites: any[] = [];
+  @Input() sites: sitesList[] = [];
   @Output() productSaved = new EventEmitter<{ title: string, sitio: string }>();
   @Output() newSiteRequested = new EventEmitter();
 
