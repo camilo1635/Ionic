@@ -9,7 +9,6 @@ import { getDatabase, onValue, ref, push, set, remove, onChildAdded, onChildChan
 import { Title } from '@angular/platform-browser';
 import { ProductModalComponent } from './../product-modal.component';
 import { SiteModalComponent } from './../site-modal.component';
-//import { ReactiveFormsModule } from '@angular/forms'; 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
@@ -28,7 +27,7 @@ const firebaseConfig = {
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [NgClass, IonItemOption, IonItemOptions, IonItemSliding, NgFor, IonLabel, IonItem, IonList, IonButtons, IonIcon, IonButton, IonHeader, IonToolbar, IonTitle, IonContent,FormsModule ],
+  imports: [NgClass, IonItemOption, IonItemOptions, IonItemSliding, NgFor, IonLabel, IonItem, IonList, IonButtons, IonIcon, IonButton, IonHeader, IonToolbar, IonTitle, IonContent,FormsModule,ProductModalComponent,SiteModalComponent  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 
@@ -100,7 +99,13 @@ export class HomePage {
       }
     });
 
-    return await modal.present();
+    modal.present();
+
+    modal.onWillDismiss().then((detail) => {
+      if (detail.data?.newSiteRequested) {
+        this.openSiteModal();
+      }
+    });
   }
 
   async openSiteModal() {
@@ -117,21 +122,21 @@ export class HomePage {
     return await modal.present();
   }
 
-  addProduct(product: listaCompras) {
-    const newProduct = new listaCompras();
-    newProduct.id = product.id;
-    newProduct.fechaRegistro = product.fechaRegistro;
+  addProduct(product: { title: string, sitio: string }) {
+  const newProduct = new listaCompras();
+  newProduct.title = product.title;
+  newProduct.sitio = product.sitio;
 
-    const productCol = ref(this.db, 'products');
-    const newProductRef = push(productCol);
-    newProduct.id = newProductRef.key;
+  const productCol = ref(this.db, 'products');
+  const newProductRef = push(productCol);
+  newProduct.id = newProductRef.key;
 
-    set(newProductRef, newProduct).then(() => {
-      console.log("Product added successfully!");
-    }).catch((error) => {
-      console.error("Error adding product: ", error);
-    });
-  }
+  set(newProductRef, newProduct).then(() => {
+    console.log("Product added successfully!");
+  }).catch((error) => {
+    console.error("Error adding product: ", error);
+  });
+}
 
   addSite(site: sitesList) {
     const newSite = new sitesList();

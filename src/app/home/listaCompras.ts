@@ -1,14 +1,10 @@
 export class listaCompras{
-    id: string | null = "";
-    fechaRegistro: string ="";
+  id: string | null = null;
+  title: string = '';
+  sitio: string = '';
+  fechaRegistro: Date = new Date();
 
-    constructor() {
-        const currentDate: Date = new Date();
-        
-        const year: number = currentDate.getFullYear();
-        const month: string = ('0' + (currentDate.getMonth() + 1)).slice(-2);
-        const day: string = ('0' + currentDate.getDate()).slice(-2);
-
-        this.fechaRegistro = `${year}-${month}-${day}`;
-    }
+  constructor() {
+    this.fechaRegistro = new Date();
+  }
 }

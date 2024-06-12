@@ -3,18 +3,18 @@ import { ModalController } from '@ionic/angular';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { NgFor, NgClass } from '@angular/common';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonIcon, IonButtons, IonList, IonItem, IonLabel, IonItemSliding, IonItemOptions, IonItemOption, IonInput, IonSelect, IonSelectOption } from '@ionic/angular/standalone';
+//import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonIcon, IonButtons, IonList, IonItem, IonLabel, IonItemSliding, IonItemOptions, IonItemOption, IonInput, IonSelect, IonSelectOption } from '@ionic/angular/standalone';
 //import { ReactiveFormsModule } from '@angular/forms'; 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { SharedModule } from './shared.module';
 
 @Component({
   selector: 'app-product-modal',
   templateUrl: './product-modal.component.html',
   standalone: true,
-  imports: [NgClass, IonItemOption, IonItemOptions, IonItemSliding, NgFor, IonLabel, IonItem, IonList, IonButtons, IonIcon, IonButton, IonHeader, IonToolbar, IonTitle, IonContent,IonInput, IonSelect, IonSelectOption,FormsModule ],
+  imports: [NgClass, SharedModule, NgFor, FormsModule ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-
 export class ProductModalComponent {
   @Input() sites: any[] = [];
   @Output() productSaved = new EventEmitter<{ title: string, sitio: string }>();
@@ -30,8 +30,9 @@ export class ProductModalComponent {
   }
 
   requestNewSite() {
-    this.newSiteRequested.emit();
+    this.modalController.dismiss({ newSiteRequested: true });
   }
+  
 
   dismissModal() {
     this.modalController.dismiss();
